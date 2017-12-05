@@ -1,3 +1,18 @@
 h1{
-    background: red;
+    background: #a7dbd8;
+}
+ul{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.listIfo li{
+    height: 40px;
+    line-height: 40px;
+    margin: 10px 0;
+}
+.listIfo span{
+    display: inline-block;
+    width: 200px;
+    background: #4dc71f;
 }
