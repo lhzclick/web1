@@ -19,11 +19,11 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public')));  //配置公共静态文件
 
 app.use('/', routes);
 app.use('/users', users);
-app.use('/v', express.static('views'));
+app.use('/v', express.static('views'));   //配置项目静态文件
 /// catch 404 and forwarding to error handler
 app.use(function(req, res, next) {
     var err = new Error('Not Found');
