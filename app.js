@@ -20,12 +20,12 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));  //ÅäÖÃ¹«¹²¾²Ì¬ÎÄ¼ş
+app.use(express.static(path.join(__dirname, 'public')));  //é…ç½®å…¬å…±é™æ€æ–‡ä»¶
 
 app.use('/', routes);
 app.use('/users', users);
-app.use('/v', express.static('views'));   //ÅäÖÃÏîÄ¿¾²Ì¬ÎÄ¼ş
-//mysql´´½¨Á¬½Ó
+app.use('/v', express.static('views'));   //é…ç½®é¡¹ç›®é™æ€æ–‡ä»¶
+//mysqlåˆ›å»ºè¿æ¥
 var connection = mysql.createConnection({
     host:'localhost',
     user:'root',
@@ -33,7 +33,7 @@ var connection = mysql.createConnection({
     port:'3306',
     database:'node'
 })
-//Ö´ĞĞÁ¬½Ó
+//æ‰§è¡Œè¿æ¥
 connection.connect(function(err){
     if(err){
         console.log('[query]-:'+err);
@@ -41,26 +41,67 @@ connection.connect(function(err){
         console.log('conneting')
     }
 })
-//Ö´ĞĞ²éÑ¯
-let userGetSql = 'SELECT * FROM info';
+
+
+//connection.end();
+//æŸ¥è¯¢
+app.get('/info', function (req, res) {
+    //æ‰§è¡ŒæŸ¥è¯¢
+    let userGetSql = 'SELECT * FROM info';
     connection.query(userGetSql,function(err,result){
         if(err){
-            console.log('²éÑ¯´íÎó')
+            console.log('æŸ¥è¯¢é”™è¯¯')
         }else{
+            res.send(result);
             dataJ = result;
         }
     });
 
-//connection.end();
-//²éÑ¯
-app.get('/info', function (req, res) {
-    res.send(dataJ);
 });
-//ĞÂÔö
+//æ–°å¢
 app.get('/add',function (req,res){
     let querys = req.query;
+    let [user,age,sex,password] = [querys.user,querys.age,querys.sex,querys.password];
+    console.log(querys)
+    connection.query("insert into info(user,age,sex,password) values('"+user+"','"+ age +"','"+sex+"','"+ password +"')",function(err,rows){
+        if(err){
+            res.send("æ–°å¢å¤±è´¥"+err);
+        }else {
+            res.send("æ–°å¢æˆåŠŸ");
+        }
+    });
+});
+//åˆ é™¤
+app.get('/del',function (req,res){
+    let querys = req.query;
+    let _user =  querys.user;
+    let delSql =`delete from info where user ="${_user}"`;
+    console.log(delSql)
+    connection.query(delSql,function(err,rows){
+        if(err){
+            res.send("åˆ é™¤å¤±è´¥"+err);
+        }else {
+            res.send("åˆ é™¤æˆåŠŸ");
+            //res.redirect("/users");
+        }
+    });
 })
 
+//ä¿®æ”¹
+app.get('/update',function (req,res){
+    let querys = req.query;
+    let [user,age,sex,password] =  [querys.user,querys.age,querys.sex,querys.password];
+    var sql = `update info set age ="${age}", sex ="${sex}", password ="${password}"  where user ="${user}"`;
+    //var sql = "update user set age = '"+ age +"',sex = '"+ sex +"',password = '"+ password +"' where user = " + user;
+    console.log(sql)
+    connection.query(sql,function(err,rows){
+        if(err){
+            res.send("ä¿®æ”¹å¤±è´¥ " + err);
+        }else {
+            res.send("ä¿®æ”¹æˆåŠŸ");
+        }
+    });
+})
 
 
 

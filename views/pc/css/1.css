@@ -11,8 +11,22 @@ ul{
     line-height: 40px;
     margin: 10px 0;
 }
-.listIfo span{
+.listIfo li:nth-of-type(1) span{
+    background: gold ;
+}
+.listIfo span,.listIfo input{
+    height: 40px;
     display: inline-block;
     width: 200px;
     background: #4dc71f;
+    border:0;
+}
+.listIfo input:disabled{
+    color: red;
+}
+.del,.modify{
+    text-align: center;
+    color: red;
+    cursor: cell;
+    text-decoration: underline;
 }
