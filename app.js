@@ -66,7 +66,25 @@ app.get('/info', function (req, res) {
             res.send(result);
         }
     });
-
+});
+app.get('/infoUser', function (req, res) {
+    let querys = req.query;
+    //执行查询
+    let userGetSql = 'SELECT * FROM info';
+    connection.query(userGetSql,function(err,result){
+        if(err){
+            console.log('查询错误')
+        }else{
+            if(querys.token=="abc"){
+                res.header("Access-Control-Allow-Origin", "*");
+                res.header("Access-Control-Allow-Headers", "X-Requested-With");
+                res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
+                res.header("X-Powered-By",' 3.2.1')
+                res.header("Content-Type", "application/json;charset=utf-8");
+                res.send(result);
+            }
+        }
+    });
 });
 //新增
 app.get('/add',function (req,res){
